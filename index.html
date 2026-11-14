@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Science Quest</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <main class="game">
+            <header class="hud">
+                <div id="lives">❤️❤️❤️</div>
+                <div id="streak">🔥 0</div>
+                <div id="level">Rookie</div>
+            </header>
+            <div class="xp-bar"><div id="xp-fill"></div></div>
+            <p id="xp-text">0 XP</p>
+            <section id="quiz">
+                <h2 id="question">Question goes here</h2>
+                <div id="options"></div>
+                <p id="feedback"></p>
+                <button id="next-btn" class="hidden">Next ➜</button>
+            </section>
+            <section id="end-screen" class="hidden">
+                <h2 id="end-title"></h2>
+                <p id="end-score"></p>
+                <button id="restart-btn">Play again</button>
+            </section>
+        </main>
+
+        <script src="script.js"></script>
+    </body>
+</html>
