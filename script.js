@@ -6,15 +6,36 @@ const questions = [
   { q: 'Roughly how fast does light travel?', options: ['3 × 10^5 m/s', '3 × 10^6 m/s', '3 × 10^8 m/s', '3 × 10^10 m/s'], answer: 2 },
   { q: 'Which is the closest star to Earth after the Sun?', options: ['Sirius', 'Proxima Centauri', 'Betelgeuse', 'Vega'], answer: 1 },
   { q: 'What is the hardest naturally occurring substance?', options: ['Quartz', 'Steel', 'Diamond', 'Granite'], answer: 2 },
+  { q: 'What is the chemical symbol for gold?', options: ['Au', 'Ag', 'Gd', 'Go'], answer: 0 },
+  { q: 'How many bones does an adult human body have?', options: ['156', '256', '306', '206'], answer: 3 },
+  { q: 'Which planet is known as the Red Planet?', options: ['Mercury', 'Jupiter', 'Neptune', 'Mars'], answer: 3 },
+  { q: 'Which gas makes up most of Earth\'s atmosphere?', options: ['Oxygen', 'Carbon dioxide', 'Nitrogen', 'Argon'], answer: 2 },
+  { q: 'What is the SI unit of electrical resistance?', options: ['Ohm', 'Volt', 'Watt', 'Ampere'], answer: 0 },
+  { q: 'Which blood cells carry oxygen around the body?', options: ['White blood cells', 'Platelets', 'Red blood cells', 'Plasma'], answer: 2 },
+  { q: 'At sea level, at what temperature does water boil?', options: ['90 °C', '100 °C', '110 °C', '120 °C'], answer: 1 },
+  { q: 'Who developed the theory of general relativity?', options: ['Newton', 'Galileo', 'Bohr', 'Einstein'], answer: 3 },
+  { q: 'What is the largest organ of the human body?', options: ['Liver', 'Brain', 'Skin', 'Lungs'], answer: 2 },
+  { q: 'Which subatomic particle has a negative charge?', options: ['Electron', 'Proton', 'Neutron', 'Photon'], answer: 0 },
+  { q: 'What is the pH of pure water at 25 °C?', options: ['0', '7', '10', '14'], answer: 1 },
+  { q: 'About how long does sunlight take to reach Earth?', options: ['8 seconds', '8 hours', '8 days', '8 minutes'], answer: 3 },
+  { q: 'Which element has the atomic number 1?', options: ['Hydrogen', 'Helium', 'Lithium', 'Carbon'], answer: 0 },
+  { q: 'Which force keeps the planets in orbit around the Sun?', options: ['Magnetism', 'Friction', 'Gravity', 'Nuclear force'], answer: 2 },
+  { q: 'Which is the largest planet in our solar system?', options: ['Saturn', 'Neptune', 'Uranus', 'Jupiter'], answer: 3 },
+  { q: 'What does DNA stand for?', options: ['Deoxyribonucleic acid', 'Dioxyribonucleic acid', 'Deoxyribose nucleic anhydride', 'Dinucleic acid'], answer: 0 },
+  { q: 'Which layer of the Earth is made of liquid metal?', options: ['Crust', 'Mantle', 'Outer core', 'Inner core'], answer: 2 },
+  { q: 'What kind of energy does a moving object have?', options: ['Kinetic', 'Potential', 'Thermal', 'Chemical'], answer: 0 },
+  { q: 'Which vitamin does your skin make when exposed to sunlight?', options: ['Vitamin A', 'Vitamin C', 'Vitamin D', 'Vitamin K'], answer: 2 },
+  { q: 'Sound travels fastest through which of these?', options: ['Air', 'Water', 'Steel', 'A vacuum'], answer: 2 },
 ];
+const ROUND_LENGTH = Math.min(10, questions.length);
 const XP_PER_CORRECT = 10;
-const maxXp = questions.length * XP_PER_CORRECT * 2;
+const maxXp = XP_PER_CORRECT * (2 * ROUND_LENGTH - 2); // first 2 answers earn 10, the rest earn 20
 
-const levels=[
-    { name: 'Rookie', minXp:0},
-    { name: 'Explorer', minXp:30},
-    { name: 'Scientist', minXp:60},
-    { name: 'Genius', minXp:90},
+const levels = [
+  { name: 'Rookie', minPct: 0 },
+  { name: 'Explorer', minPct: 0.25 },
+  { name: 'Scientist', minPct: 0.5 },
+  { name: 'Genius', minPct: 0.8 },
 ];
 
 let state ={};
@@ -59,12 +80,12 @@ function shuffle(arr){
     return copy;
 }
 
-function getLevel(xp){
-    let current=levels[0];
-    for (const lvl of levels){
-        if (xp>=lvl.minXp) current=lvl;
-    }
-    return current.name;
+function getLevel(xp) {
+  let current = levels[0];
+  for (const lvl of levels) {
+    if (xp / maxXp >= lvl.minPct) current = lvl;
+  }
+  return current.name;
 }
 
 function updateHud(){
@@ -162,7 +183,7 @@ function endGame(){
 }
 
 function startGame(){
-    state={xp:0, lives:3, streak:0, index:0, locked: false, deck:shuffle(questions)};
+    state={xp:0, lives:3, streak:0, index:0, locked: false, deck:shuffle(questions).slice(0, ROUND_LENGTH)};
     el.endScreen.classList.add('hidden');
     el.quiz.classList.remove('hidden');
     updateHud();
