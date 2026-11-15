@@ -28,7 +28,7 @@ A gamified science quiz that runs in the browser. Answer questions to earn XP, k
 
 1. Clone the repository:
    ```
-   git clone https://github.com/YOUR-USERNAME/science-quest.git
+   git clone https://github.com/himeshmartha06/science-quest.git
    cd science-quest
    ```
 2. Open `index.html` in your browser. For auto-refresh while editing, use the **Live Server** extension in VS Code (right-click `index.html` → *Open with Live Server*).
