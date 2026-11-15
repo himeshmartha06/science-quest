@@ -2,7 +2,8 @@
 
 A gamified science quiz that runs in the browser. Answer questions to earn XP, keep your streak alive, level up from **Rookie** to **Genius**, and try not to lose all three lives.
 
-![Science Quest screenshot](screenshot.png)
+![Science Quest screenshot](<img width="391" height="398" alt="Screenshot 2026-11-16 024510" src="https://github.com/user-attachments/assets/3aa1de11-ad33-49ef-b15e-aaa584f60b1a" />
+)
 
 **▶ Play it live:** https://himeshmartha06.github.io/science-quest/
 
