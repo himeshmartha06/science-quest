@@ -4,7 +4,7 @@ A gamified science quiz that runs in the browser. Answer questions to earn XP, k
 
 ![Science Quest screenshot](screenshot.png)
 
-**▶ Play it live:** https://YOUR-USERNAME.github.io/science-quest/
+**▶ Play it live:** https://himeshmartha06.github.io/science-quest/
 
 ## Features
 
