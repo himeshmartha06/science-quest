@@ -1,3 +1,4 @@
+console.log('script loaded');
 const questions = [
   { q: 'Which planet has the most known moons?', options: ['Mars', 'Saturn', 'Venus', 'Earth'], answer: 1 },
   { q: 'Which gas do plants absorb for photosynthesis?', options: ['Oxygen', 'Nitrogen', 'Carbon dioxide', 'Helium'], answer: 2 },
@@ -6,6 +7,9 @@ const questions = [
   { q: 'Which is the closest star to Earth after the Sun?', options: ['Sirius', 'Proxima Centauri', 'Betelgeuse', 'Vega'], answer: 1 },
   { q: 'What is the hardest naturally occurring substance?', options: ['Quartz', 'Steel', 'Diamond', 'Granite'], answer: 2 },
 ];
+const XP_PER_CORRECT = 10;
+const maxXp = questions.length * XP_PER_CORRECT * 2;
+
 const levels=[
     { name: 'Rookie', minXp:0},
     { name: 'Explorer', minXp:30},
@@ -33,6 +37,18 @@ const el ={
     bestScore: document.getElementById('best-score'),
     restartBtn: document.getElementById('restart-btn'),
 };
+const sounds = {
+  correct: new Audio('sounds/ma-ka-bhosda-aag.mp3'),
+  wrong: new Audio('sounds/angry-amitabh.mp3'),
+  genius: new Audio('sounds/7-crore-amitabh-baccan.mp3'),
+};
+
+function playSound(name) {
+  const s = sounds[name];
+  s.currentTime = 0; // restart if it's still playing
+  s.play().catch(() => {}); // ignore errors if the browser blocks it
+}
+
 
 function shuffle(arr){
     const copy =[...arr];
@@ -56,7 +72,7 @@ function updateHud(){
     el.streak.textContent=`🔥 ${state.streak}`;
     el.level.textContent=getLevel(state.xp);
     el.xpFill.style.width=Math.min(100, (state.xp/maxXp)*100) +'%';
-    el.xpText.textContent='${state.xp} XP';
+    el.xpText.textContent=`${state.xp} XP`;
 }
 
 function showQuestion(){
@@ -91,7 +107,8 @@ function handleAnswer(chosen, btn){
         const gained = XP_PER_CORRECT * bonus;
         state.xp += gained;
         btn.classList.add('correct');
-        el.feedback.textContent='✅ Correct! +${gained} XP';
+        el.feedback.textContent=`✅ Correct! +${gained} XP`;
+        playSound('correct');
     }else{
         state.streak=0;
         state.lives--;
@@ -100,6 +117,7 @@ function handleAnswer(chosen, btn){
         el.feedback.textContent='❌ Not quite. You lost a life.';
         el.game.classList.add('shake');
         setTimeout(()=>el.game.classList.remove('shake'), 300);
+        playSound('wrong');
     }
 
     updateHud();
@@ -129,14 +147,17 @@ function endGame(){
     el.quiz.classList.add('hidden');
     el.endScreen.classList.remove('hidden');
     el.endTitle.textContent=state.lives===0 ? '💀 Game over' : '🏆 Quest complete!';
-    el.endScore.textContent='You earned ${state.xp} XP and reached ${getLevel(state.xp)} level.';
+    el.endScore.textContent=`You earned ${state.xp} XP and reached ${getLevel(state.xp)} level.`;
+    if (state.lives > 0 && getLevel(state.xp) === 'Genius') {
+       playSound('genius');
+    }
 
     const best = loadBest();
     if (state.xp >best){
         saveBest(state.xp);
         el.bestScore.textContent='🎉 New high score!';
     }else{
-        el.bestScore.textContent='Best score: ${best} XP';
+        el.bestScore.textContent=`Best score: ${best} XP`;
     }
 }
 
